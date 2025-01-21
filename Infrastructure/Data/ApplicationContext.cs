@@ -7,5 +7,5 @@ public class ApplicationContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<CardDetail>? CardDetails { get; set; }
     public DbSet<Core.Entities.Photo>? Photos { get; set; }
-    public DbSet<Core.Entities.QRCode>? QRCodes { get; set; }
+    //public DbSet<Core.Entities.QRCode>? QRCodes { get; set; }
 }
