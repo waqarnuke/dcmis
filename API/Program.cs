@@ -29,7 +29,6 @@ builder.Services.AddScoped<IUserDetailsRepository, UserDetailsRepository>();
 builder.Services.AddScoped<ICardDetailRepository, CardDetailRepository>();
 builder.Services.AddScoped<IPhotoRepository, PhotoRepository>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
-builder.Services.AddScoped<IQRCoreRepository, QRCoreRepository>();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("Cloudinary"));
 
 
@@ -53,5 +52,16 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors("AllowAngular");
 
 app.MapControllers();
-
+try
+{
+    using var scope = app.Services.CreateScope();
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ApplicationContext>();
+    await context.Database.MigrateAsync();
+}
+catch(Exception ex)
+{
+    Console.WriteLine(ex);
+    throw;
+}
 app.Run();
