@@ -1,17 +1,13 @@
 using API.DTOs;
 using Core.Entities;
 using Core.Interface;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers ;
-
-[ApiController]
-[Route("api/[controller]")]
 public class CardDetailController(
                                 ICardDetailRepository repo, 
                                 IPhotoService photoService,
-                                IPhotoRepository photorepo) : ControllerBase
+                                IPhotoRepository photorepo) : BaseApiController
 {
     [HttpGet("GetByUserId")]
     public async Task<ActionResult<CardDetailDto>> GetByUserId(string userId)
@@ -55,7 +51,6 @@ public class CardDetailController(
     public async Task<ActionResult<CardDetail>> Create(CardDetailDto obj)
     {
         var request =  new CardDetail {
-            Id = obj.Id,
             UserId = new Guid(obj.UserId),
             Name = obj.Name,
             Title = obj.Title,
@@ -76,7 +71,7 @@ public class CardDetailController(
         
         if(await repo.SaveChangesAsync())
         {
-            return CreatedAtAction("GetByUserId", new{ id = obj.Id},obj);
+            return CreatedAtAction("GetByUserId", new{ id = request.Id},request);
         }
 
         return BadRequest("Problem createing user detail");
