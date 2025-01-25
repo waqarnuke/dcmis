@@ -19,7 +19,7 @@ public class CardDetailController(
 
         var getAllphoto = await photorepo.GetByIdAsync(x => x.UserId == userId);
 
-        if(userDetail == null) return NotFound();
+        if(userDetail == null) return null;
         
         var response =  new CardDetailDto {
             Id = userDetail.Id,
@@ -112,12 +112,8 @@ public class CardDetailController(
                 photorepo.Delete(photo);
                 await photorepo.SaveChangesAsync();
             }
-
-            repo.Delete(userDetail);
-            await repo.SaveChangesAsync();
         }
         
-
         repo.Delete(userDetail);
 
         if(await repo.SaveChangesAsync())
